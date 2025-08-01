@@ -7,6 +7,10 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
 
@@ -1032,6 +1036,11 @@
             background-position: 10px 10px;
             background-repeat: no-repeat;
         }
+
+        .flatpickr-time input {
+            pointer-events: none;
+            caret-color: transparent;
+        }
     </style>
 </head>
 <body>
@@ -1267,7 +1276,7 @@ Taste the harmony of creativity and tradition at Katsin..
         </div>
         <div class="form-group">
             <label for="datetime">Date & Time</label>
-            <input type="datetime-local" id="datetime" required>
+            <input id="datetime" type="text" readonly required>
         </div>
         <div class="form-group">
             <label for="guestQty">Number of Guests</label>
@@ -1278,11 +1287,16 @@ Taste the harmony of creativity and tradition at Katsin..
     <div id="rezx-note" style="margin-top: 1.2rem; color: #888; font-size: 0.95rem; text-align: center;"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <!-- SCRIPTS -->
 <script>
     let reservations = [];
     let isStaffLoggedIn = false;
     let currentLanguage = 'en';
+
+    ///// here we have working hours ////
+    let timeFrom = '11:00';
+    let timeTo = '01:00';
 
     const translations = {
         en: {
@@ -1415,24 +1429,35 @@ Taste the harmony of creativity and tradition at Katsin..
         });
     }
 
-    function setMinDateTime() {
-        const now = new Date();
-        // Format to yyyy-MM-ddTHH:mm for input
-        const pad = n => n.toString().padStart(2, '0');
-        const minDateTime = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
-        document.getElementById('datetime').setAttribute('min', minDateTime);
-    }
+    // function setMinDateTime() {
+    //     const now = new Date();
+    //     // Format to yyyy-MM-ddTHH:mm for input
+    //     const pad = n => n.toString().padStart(2, '0');
+    //     const minDateTime = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    //     document.getElementById('datetime').setAttribute('min', minDateTime);
+    // }
 
     function showReservationForm() {
         document.getElementById('reservationForm').style.display = 'block';
         document.getElementById('reservationFormContent').style.display = 'block';
         document.getElementById('reservationSuccessMsg').style.display = 'none';
         document.getElementById('rezx-note').textContent = translations[currentLanguage]['rezx-note'];
-        setMinDateTime();
+        // setMinDateTime();
+        document.body.style.overflow = 'hidden';
     }
+
+    function checkIsDefaultShowForm() {
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("form");
+        if(name) {
+            showReservationForm();
+        }
+    }
+    checkIsDefaultShowForm();
 
     function hideReservationForm() {
         document.getElementById('reservationForm').style.display = 'none';
+        document.body.style.overflow = '';
     }
 
     async function submitReservation(event) {
@@ -1447,7 +1472,7 @@ Taste the harmony of creativity and tradition at Katsin..
             // Create a Date object in local time
             const localDate = new Date(selectedDatetime + ':00.000Z');
             // Add 5 minutes
-            localDate.setMinutes(localDate.getMinutes() + 5);
+            localDate.setMinutes(localDate.getMinutes());
             const datetime = localDate.toISOString();
             
 
@@ -1476,8 +1501,11 @@ Taste the harmony of creativity and tradition at Katsin..
                 return;
             }
 
-            // Convert to Date object
-            const fromDate = datetime;
+            ////// to convert to UTC, removing localtimezone, for exaple in Armenia it's a 4 hours
+            const localtimeZone = ((new Date().getTimezoneOffset() / 60) * -1).toString();
+            const date = new Date(datetime);
+            const dateTemp = new Date(date.getTime() - 4 * 60 * 60 * 1000);
+            const fromDate = dateTemp.toISOString();
 
             const reservation = {
                 customerName: customerName,
@@ -1491,6 +1519,9 @@ Taste the harmony of creativity and tradition at Katsin..
             const apiUrl = ""; // Replace with the actual API URL
 
             try {
+                // Disable submit button
+                disableSubmitBtn(true);
+
                 // Post the data to the API
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -1506,21 +1537,156 @@ Taste the harmony of creativity and tradition at Katsin..
                     const msg = document.getElementById('reservationSuccessMsg');
                     msg.textContent = translations[currentLanguage]['reservation-success'];
                     msg.style.display = 'block';
+
+                    disableSubmitBtn(false);
                 } else {
                     // Handle failure
                     const error = await response.text();
                     console.error('Error:', error);
                     alert('Failed to submit the reservation. Please try again.');
+                    disableSubmitBtn(false);
                 }
             } catch (error) {
                 console.error('Error:', error);
                 alert('An error occurred while submitting the reservation.');
+                disableSubmitBtn(false);
             }
 
             // Do not reset or hide the popup immediately, let user see the message
         } catch (error) {
             alert('An error occurred while submitting the reservation. Please try again.');
         }
+    }
+
+    function disableSubmitBtn(isDisabled) {
+        const sumbitButton = document.getElementById('submit-button');
+        
+        if (sumbitButton && isDisabled) {
+            sumbitButton.disabled = true;
+            sumbitButton.style.opacity = '0.5';
+        }
+        if (sumbitButton && !isDisabled) {
+            sumbitButton.disabled = false;
+            sumbitButton.style.opacity = '1';
+        }
+    }
+
+    // flatpickr
+
+    function pad(n) {
+        return n < 10 ? '0' + n : n;
+    }
+
+    // Function to round time to nearest 5 minutes
+    function roundToNearest5(date) {
+        const minutes = date.getMinutes();
+        const remainder = minutes % 5;
+        const roundedMinutes = remainder < 3 ? 
+        minutes - remainder : 
+        minutes + (5 - remainder);
+        
+        const newDate = new Date(date);
+        newDate.setMinutes(roundedMinutes);
+        newDate.setSeconds(0);
+        newDate.setMilliseconds(0);
+        
+        return newDate;
+    }
+
+    // Set now rounded to nearest 5 minutes as default
+    const nowRounded = roundToNearest5(new Date());
+    // Add 5 minutes if rounded time is in the past (e.g., if it's 19:12, rounds to 19:15)
+    if (nowRounded <= new Date()) {
+        nowRounded.setMinutes(nowRounded.getMinutes() + 5);
+    }
+
+    ////// checking is nowRounded is not in the working hours range, setting current time to timeFrom 
+    let currentTime = `${pad(nowRounded.getHours())}:${pad(nowRounded.getMinutes())}`;
+    if (!isTimeInRange(currentTime, timeFrom, timeTo)) {
+        nowRounded.setHours(timeFrom.split(':')[0])
+        nowRounded.setMinutes(timeFrom.split(':')[1])
+    }     
+
+    flatpickr("#datetime", {
+        enableTime: true,
+        time_24hr: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: "today",
+        defaultDate: nowRounded, // default time = now rounded to nearest 5 min
+        allowInput: false,
+        clickOpens: true,
+        disableMobile: true,
+
+        onOpen: function(selectedDates, dateStr, instance) {
+            // prevent typing in hour/minute fields
+            const timeInputs = instance.calendarContainer.querySelectorAll(".flatpickr-time input");
+            timeInputs.forEach(input => input.setAttribute("readonly", "readonly"));
+
+            const selectedDate = instance.selectedDates[0] || new Date();
+            const now = new Date();
+            const nowRounded = roundToNearest5(now);
+            if (nowRounded <= now) {
+                nowRounded.setMinutes(nowRounded.getMinutes() + 5);
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const isToday = selectedDate.toDateString() === today.toDateString();
+
+            if (isToday) {
+                const minTimeStr = pad(nowRounded.getHours()) + ":" + pad(nowRounded.getMinutes());                
+                // instance.set("minTime", minTimeStr);
+
+                instance.set("minTime", isTimeInRange(minTimeStr, timeFrom, timeTo) ? minTimeStr : timeFrom);
+                instance.set("maxTime", timeTo);
+            } else {
+                // instance.set("minTime", "00:00");
+
+                instance.set("minTime", timeFrom);
+                instance.set("maxTime", timeTo);
+            }
+        },
+
+        onChange: function(selectedDates, dateStr, instance) {
+            const selectedDate = selectedDates[0];
+            const now = new Date();
+            const nowRounded = roundToNearest5(now);
+            if (nowRounded <= now) {
+                nowRounded.setMinutes(nowRounded.getMinutes() + 5);
+            }
+
+            const isToday = selectedDate.toDateString() === (new Date()).toDateString();
+
+            if (isToday) {
+                const minTimeStr = pad(nowRounded.getHours()) + ":" + pad(nowRounded.getMinutes());
+                // instance.set("minTime", minTimeStr);
+
+                instance.set("minTime", isTimeInRange(minTimeStr, timeFrom, timeTo) ? minTimeStr : timeFrom);
+                instance.set("maxTime", timeTo);
+            } else {
+                // instance.set("minTime", "00:00");
+
+                instance.set("minTime", timeFrom);
+                instance.set("maxTime", timeTo);
+            }
+        }
+    });
+
+    function isTimeInRange(currentTime, startTime, endTime) {
+        const today = new Date().toISOString().split('T')[0]; // e.g. "2025-07-30"
+
+        const time = new Date(`${today}T${currentTime}:00`);
+        const start = new Date(`${today}T${startTime}:00`);
+        const end = new Date(`${today}T${endTime}:00`);
+
+        return time >= start && time <= end;
+    }
+
+    /////// check if query params has reservation property, open reservation popup
+    const params = new URLSearchParams(window.location.search);
+    if (JSON.parse(params.get('openreservation')) ) {
+        showReservationForm();
     }
 </script>
 
