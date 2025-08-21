@@ -1282,7 +1282,7 @@ Taste the harmony of creativity and tradition at Katsin..
             <label for="guestQty">Number of Guests</label>
             <input type="number" id="guestQty" min="1" required>
         </div>
-        <button type="submit" class="submit-btn">Submit Reservation</button>
+        <button type="submit" class="submit-btn" id="submit-button">Submit Reservation</button>
     </form>
     <div id="rezx-note" style="margin-top: 1.2rem; color: #888; font-size: 0.95rem; text-align: center;"></div>
 </div>
@@ -1556,6 +1556,8 @@ Taste the harmony of creativity and tradition at Katsin..
         } catch (error) {
             alert('An error occurred while submitting the reservation. Please try again.');
         }
+
+        resetForm();
     }
 
     function disableSubmitBtn(isDisabled) {
@@ -1569,6 +1571,14 @@ Taste the harmony of creativity and tradition at Katsin..
             sumbitButton.disabled = false;
             sumbitButton.style.opacity = '1';
         }
+    }
+
+    function resetForm() {
+        document.getElementById('customerName').value = null;
+        document.getElementById('email').value = null;
+        document.getElementById('phoneNumber').value = null;
+        document.getElementById('datetime').value = null;
+        document.getElementById('guestQty').value = null;
     }
 
     // flatpickr
