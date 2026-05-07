@@ -295,6 +295,10 @@
       .item-md { width: 70%; bottom: -10px; right: 0; }
       .item-sm { display: none; }
 
+      .section-wrapper {
+        padding: var(--section-spacing) 5%;
+      }
+
       .hero h1 {
         font-size: clamp(32px, 10vw, 42px) !important;
         text-align: center;
@@ -628,21 +632,27 @@
     }
 
     .social-link {
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
+      font-size: 2.2rem;
+      color: #ffffff;
+      transition: var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
-      color: #ffffff;
-      transition: var(--transition);
+    }
+
+    .social-link.instagram:hover {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .social-link.facebook:hover {
+      color: #1877F2;
     }
 
     .social-link:hover {
-      background: var(--primary);
-      transform: translateY(-5px);
+      transform: translateY(-5px) scale(1.1);
+      filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.1));
     }
 
     .footer-bottom {
@@ -786,7 +796,7 @@
   <section id="gallery-section" class="section-wrapper experience-section">
     <div class="luxury-grid">
       <div class="collage-wrapper">
-        <div class="collage-item item-lg hidden" style="width: 100%; height: 100%;">
+        <div class="collage-item item-lg hidden" style="width: 100%; height: 100%; left: 0;">
           <video src="videos/IMG_7518.mp4" muted loop autoplay style="border-radius: var(--radius);"></video>
           <div class="glass-card headline-card" style="position: absolute; bottom: 40px; left: 40px; right: 40px; text-align: center;">
             <h2 id="quote-headline" style="margin: 0; color: var(--text-main);">This isn’t just dinner; it’s the headline event.</h2>
@@ -826,10 +836,12 @@
         <div class="footer-logo">Tabu</div>
         <p id="footer-tagline">Where Fine Dining meets Live Entertainment.</p>
         <div class="footer-socials">
-          <a href="https://www.instagram.com/tabu.yerevan/" target="_blank" class="social-link"><i
-              class="fab fa-instagram"></i></a>
-          <a href="https://www.facebook.com/profile.php?id=61560662243003" target="_blank" class="social-link"><i
-              class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/tabuyerevan/" target="_blank" rel="noopener noreferrer" class="social-link instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61584441804733" target="_blank" rel="noopener noreferrer" class="social-link facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
         </div>
       </div>
 
