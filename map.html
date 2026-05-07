@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabu | Map</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
+
+    <style>
+        :root {
+            --primary: #4f46e2;
+            --bg-dark: #0c111d;
+            --text-light: #f9fafb;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .map-section {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .map-container {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+
+        .directions-btn {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 15px 35px rgba(79, 70, 226, 0.4);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            white-space: nowrap;
+        }
+
+        .directions-btn:hover {
+            background-color: #4338ca;
+            transform: translateX(-50%) translateY(-5px);
+            box-shadow: 0 20px 45px rgba(79, 70, 226, 0.5);
+        }
+
+        .directions-btn i {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 600px) {
+            .directions-btn {
+                width: 80%;
+                justify-content: center;
+                bottom: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="map-section">
+        <div class="map-container">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3048.5515871419313!2d44.51628157669808!3d40.18415537939423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x406abf1234567890%3A0xda8bf6bbc5b58fd4!2sCoba%20Yerevan!5e0!3m2!1sen!2sus!4v1717435120000!5m2!1sen!2sus"
+                width="600" height="450" style="border: 0" allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=40.189539565899075,44.514664627396165"
+            target="_blank" class="directions-btn">
+            <i class="fas fa-directions"></i>
+            <span id="directions-text">Get Directions</span>
+        </a>
+    </div>
+</body>
+
+</html>

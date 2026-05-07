@@ -1,1706 +1,1094 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Katsin Restaurant | Yerevan</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- flatpickr -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-    <!-- Font Awesome -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
-
-    <style>
-        /* ========== GLOBAL STYLES ========== */
-        :root {
-            --bg-color: #2D2D2D;
-            --text-color: #dbdbdb;
-            --text-color-secondary: #ffffff;
-            --accent-color: #000000;
-            --accent-color-secondary: #2b2b2b;
-            --accent-color-third: #B08C57;
-            --secondary-color: #3b3b3b;
-            --header-bg: rgba(45, 45, 45, 0.85);
-            --card-bg: rgba(45, 45, 45, 0.95);
-            --shadow-color: rgba(0, 0, 0, 0.4);
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #f1f1f1;
-            --text-color: #4A3C31;
-            --text-color-secondary: #ffffff;
-            --accent-color: #404040;
-            --accent-color-secondary: #2b2b2b;
-            --accent-color-third: #404040;
-            --secondary-color: #c4c4c4;
-            --header-bg: rgba(94, 94, 94, 0.85);
-            --card-bg: rgba(214, 214, 214, 0.95);
-            --shadow-color: rgba(0, 0, 0, 0.2);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-color);
-            background: var(--bg-color);
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                    radial-gradient(circle at 20% 20%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 80%, rgba(210, 180, 140, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-        }
-
-        h1, h2 {
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-color-third), var(--secondary-color));
-            border-radius: 2px;
-        }
-
-        p {
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-        }
-
-        section {
-            padding: 4rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ========== HEADER & NAV ========== */
-        .main-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.2rem 2rem;
-            background: var(--header-bg);
-            backdrop-filter: blur(12px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-bottom: 1px solid rgba(245, 232, 199, 0.2);
-        }
-
-        .main-header.scrolled {
-            background: var(--header-bg);
-            padding: 0.8rem 2rem;
-            box-shadow: 0 4px 30px var(--shadow-color);
-        }
-
-        .main-nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2rem;
-            margin: 0;
-            padding: 0;
-        }
-
-        .main-nav a {
-            font-weight: 500;
-            color: var(--text-color-secondary);
-            position: relative;
-            padding: 0.5rem 0;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .main-nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color-third));
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 4px rgba(210, 180, 140, 0.2);
-        }
-
-        .main-nav a:hover::after {
-            width: 100%;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            position: fixed;
-            top: 10px;
-            right: 20px;
-            z-index: 1001;
-        }
-
-        .language-bar {
-            display: flex;
-            gap: 10px;
-        }
-
-        .language-bar a {
-            font-size: 0.9rem;
-            color: var(--text-color);
-            font-weight: 500;
-            text-transform: uppercase;
-            background: var(--card-bg);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .language-bar a:hover {
-            color: #FFD700;
-            background: rgba(245, 232, 199, 0.3);
-        }
-
-        .dark-mode-toggle {
-            display: flex;
-            align-items: center;
-        }
-
-        .dark-mode-switch {
-            display: none;
-        }
-
-        .dark-mode-label {
-            font-size: 1.5rem;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .dark-mode-label:hover {
-            color: #FFD700;
-        }
-
-        .staff-login-btn {
-            background: var(--accent-color);
-            color: #F5E8C7;
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .staff-login-btn:hover {
-            background: #A0522D;
-        }
-
-        /* ========== HERO SECTION ========== */
-        .hero {
-            position: relative;
-            height: 100vh;
-            max-width: 100%;
-            color: #F5E8C7;
-            text-align: center;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            flex-direction: column;
-            margin-bottom: 0;
-            background: url("images/hero.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position-y: 20%;
-            overflow: hidden;
-        }
-
-        .hero h1 {
-            font-size: 3.2rem;
-            margin-bottom: 1.5rem;
-            line-height: 70px;
-            text-shadow: 0 2px 4px rgba(0,0,0,1);
-            animation: fadeInDown 1s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 2;
-            color: var(--text-color-secondary);
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-            animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-btn {
-            background: var(--accent-color);
-            color: var(--text-color-secondary);
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hero-btn:hover {
-            background: var(--accent-color-secondary);
-            transform: scale(1.07) translateY(-2px);
-            box-shadow: 0 6px 18px var(--shadow-color);
-        }
-
-        .hero-btn.view-menu {
-            background: transparent;
-            border: 1px solid var(--text-color-secondary);
-        }
-
-        .hero-btn.view-menu:hover {
-            background: rgba(245, 232, 199, 0.1);
-        }
-
-        /* ========== GALLERY & VIDEO SECTIONS ========== */
-        .hidden {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .fade-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-
-        .gallery, .video-library {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 1rem;
-        }
-
-        .gallery-item, .video-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px var(--shadow-color);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
-            background: rgba(245, 232, 199, 0.2);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(139, 69, 19, 0.2);
-            height: 300px;
-        }
-
-        .gallery-item:hover, .video-item:hover {
-            transform: scale(1.04) translateY(-6px);
-            box-shadow: 0 12px 32px var(--shadow-color);
-            border-color: var(--secondary-color);
-        }
-
-        .gallery img,
-        .video-library video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            opacity: 1;
-            transform: none;
-            border: 1px solid rgba(139, 69, 19, 0.1);
-        }
-
-        .gallery img:hover,
-        .video-library video:hover {
-            transform: scale(1.05);
-            transition: transform 0.3s ease;
-            border-color: var(--accent-color);
-            box-shadow: 0 8px 24px rgba(139, 69, 19, 0.2);
-        }
-
-        /* ========== CONTACT SECTION ========== */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 1px solid rgba(245, 232, 199, 0.2);
-            box-shadow: 0 8px 32px var(--shadow-color);
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 2.5rem;
-            background: rgba(245, 232, 199, 0.1);
-            border-radius: 16px;
-            border: 1px solid rgba(245, 232, 199, 0.2);
-            height: 100%;
-        }
-
-        .contact-info h2 {
-            margin-bottom: 2.5rem;
-            font-size: 2.8rem;
-            text-align: left;
-            color: var(--text-color);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .contact-info p {
-            margin-bottom: 1.8rem;
-            font-size: 1.4rem;
-            line-height: 1.6;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.3rem 0;
-            color: var(--text-color);
-        }
-
-        .contact-info a {
-            color: var(--text-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.3rem 0;
-            font-size: 1.4rem;
-        }
-
-        .contact-info a:hover {
-            color: var(--secondary-color);
-            transform: translateX(5px);
-        }
-
-        .contact-info a i {
-            font-size: 1.6rem;
-            width: 28px;
-            text-align: center;
-        }
-
-        .contact-info img {
-            width: 28px;
-            height: 28px;
-        }
-
-        .map-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            height: 100%;
-        }
-
-        .map-container {
-            flex: 1;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            border: 1px solid rgba(245, 232, 199, 0.2);
-            height: 100%;
-            min-height: 400px;
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px var(--shadow-color);
-        }
-
-        .directions-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
-            color: var(--text-color-secondary);
-            padding: 0.8rem 1.5rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            width: 100%;
-        }
-
-        .directions-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px var(--shadow-color);;
-        }
-
-        .directions-btn i {
-            font-size: 1.1rem;
-        }
-
-        /* ========== FOOTER ========== */
-        footer {
-            background: var(--card-bg);
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid rgba(245, 232, 199, 0.2);
-        }
-
-        footer p {
-            color: var(--text-color);
-        }
-
-        .footer-icons {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-
-        .footer-icons a {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(245, 232, 199, 0.1);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(245, 232, 199, 0.2);
-        }
-
-        .footer-icons a:hover {
-            background: rgba(210, 180, 140, 0.2);
-            transform: translateY(-5px);
-            border-color: var(--secondary-color);
-        }
-
-        .footer-icons img {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* ========== ANIMATIONS ========== */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeScaleIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .hero h1 {
-            animation: fadeInDown 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .hero-buttons {
-            animation: fadeInUp 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .hero-btn, .menu-btn {
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
-        }
-        .hero-btn:hover, .menu-btn:hover {
-            transform: scale(1.07) translateY(-2px);
-            box-shadow: 0 6px 18px var(--shadow-color);
-        }
-        .gallery-item, .video-item {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
-        }
-        .gallery-item:hover, .video-item:hover {
-            transform: scale(1.04) translateY(-6px);
-            box-shadow: 0 12px 32px var(--shadow-color);
-        }
-        @keyframes fadeInPopup {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .reservation-form {
-            animation: fadeInPopup 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* ========== RESPONSIVE DESIGN ========== */
-        @media (max-width: 1024px) {
-            .contact-container {
-                grid-template-columns: 1fr;
-                padding: 2rem;
-            }
-
-            .map-section {
-                order: -1;
-            }
-
-            .map-container {
-                min-height: 350px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-nav {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 3rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                gap: 0.8rem;
-            }
-
-            .hero-btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
-            }
-
-            section {
-                padding: 3rem 1rem;
-            }
-
-            .contact-container {
-                padding: 1.5rem;
-            }
-
-            .contact-info {
-                padding: 2rem;
-            }
-
-            .contact-info h2 {
-                font-size: 2.2rem;
-                margin-bottom: 2rem;
-            }
-
-            .contact-info p,
-            .contact-info a {
-                font-size: 1.2rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .contact-info a i {
-                font-size: 1.4rem;
-            }
-
-            .contact-info img {
-                width: 24px;
-                height: 24px;
-            }
-
-            .gallery, .video-library {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1rem;
-            }
-
-            .gallery-item, .video-item {
-                height: 250px;
-            }
-
-            .map-container {
-                min-height: 300px;
-            }
-
-            .header-right {
-                flex-direction: row;
-                gap: 0.5rem;
-                right: 10px;
-            }
-
-            .language-bar a {
-                font-size: 0.8rem;
-                padding: 0.2rem 0.5rem;
-            }
-
-            .dark-mode-label {
-                font-size: 1.2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-header {
-                padding: 0.7rem 0.5rem;
-            }
-            .header-right {
-                right: 2px;
-                top: 2px;
-                gap: 0.2rem;
-            }
-            section {
-                padding: 1rem 0.2rem;
-            }
-            h1, h2 {
-                font-size: 1.3rem !important;
-            }
-            .hero h1 {
-                font-size: 2rem !important;
-            }
-            .hero-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .hero-btn {
-                width: 100%;
-                font-size: 1rem;
-                padding: 0.7rem 0.5rem;
-            }
-            .about-container,
-            .menu-container {
-                padding: 0.5rem;
-                border-radius: 10px;
-            }
-            .about-features {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-            .feature-item img {
-                height: 100px;
-            }
-            .gallery, .video-library {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-            .gallery-item, .video-item {
-                height: 150px;
-            }
-            .contact-container {
-                grid-template-columns: 1fr;
-                padding: 0.5rem;
-                border-radius: 10px;
-            }
-            .contact-info {
-                padding: 0.5rem;
-            }
-            .map-container {
-                min-height: 180px;
-            }
-            .reservation-form {
-                padding: 0.5rem;
-                width: 98vw;
-                max-width: 98vw;
-                left: 1vw;
-                top: 2vh;
-                transform: none;
-                border-radius: 10px;
-                font-size: 1rem;
-            }
-            .reservation-form h2 {
-                font-size: 1.2rem;
-            }
-            .form-group input,
-            .form-group input[type="datetime-local"] {
-                font-size: 1rem;
-                padding: 0.4rem;
-            }
-            .submit-btn {
-                width: 100%;
-                font-size: 1rem;
-                padding: 0.7rem 0.5rem;
-            }
-            .close-btn {
-                font-size: 1.2rem;
-                top: 5px;
-                right: 5px;
-            }
-            footer {
-                padding: 1.5rem 0.2rem;
-            }
-            .footer-icons a {
-                width: 32px;
-                height: 32px;
-            }
-            .footer-icons img {
-                width: 18px;
-                height: 18px;
-            }
-        }
-
-        /* ========== ABOUT & MENU SECTIONS ========== */
-        .about-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            align-items: center;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            border: 1px solid rgba(139, 69, 19, 0.15);
-            text-align: center;
-        }
-
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            height: 100%;
-        }
-
-        #about-heading {
-            font-size: 2.6rem;
-        }
-
-        .about-content p {
-            font-size: 1.6rem;
-            line-height: 1.8;
-            color: var(--text-color);
-            margin-bottom: 0;
-            flex: 1;
-        }
-
-        .about-features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .feature-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--secondary-color);
-            border-radius: 12px;
-            border: 1px solid rgba(139, 69, 19, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .feature-item img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            height: auto;
-            object-fit: cover;
-            border-radius: 8px;
-            max-width: 260px;
-            margin: 0 auto;
-        }
-
-        .feature-item h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent-color-third);
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-item p {
-            font-size: 0.95rem;
-            color: var(--text-color);
-            margin: 0;
-        }
-
-        .menu-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            border: 1px solid rgba(139, 69, 19, 0.15);
-        }
-
-        .menu-content {
-            text-align: center;
-            max-width: 600px;
-        }
-
-        .menu-content h2 {
-            font-size: 2.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-color);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .menu-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
-            color: var(--text-color-secondary);
-            padding: 1rem 4rem;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .menu-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px var(--shadow-color);
-        }
-
-        @media (max-width: 1024px) {
-            .about-container {
-                grid-template-columns: 1fr;
-                padding: 2rem;
-            }
-
-            .about-features {
-                grid-template-columns: 1fr;
-            }
-
-            .feature-item img {
-                aspect-ratio: 1 / 1;
-                height: auto;
-                max-width: 220px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .about-container,
-            .menu-container {
-                padding: 1.5rem;
-            }
-
-            .about-content h2,
-            .menu-content h2 {
-                font-size: 2.2rem;
-            }
-
-            .about-content p,
-            .menu-content p {
-                font-size: 1.1rem;
-            }
-
-            .feature-item {
-                padding: 0.8rem;
-            }
-
-            .feature-item img {
-                aspect-ratio: 1 / 1;
-                height: auto;
-                max-width: 160px;
-            }
-        }
-
-        /* ========== RESERVATION FORM STYLES ========== */
-        .reservation-form {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            z-index: 1001;
-            width: 90%;
-            max-width: 500px;
-            text-align: left;
-        }
-
-        .reservation-form h2 {
-            color: var(--text-color);
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        .submit-btn {
-            background: var(--accent-color);
-            color: var(--text-color-secondary);
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            background: var(--accent-color);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-color);
-        }
-
-        /* Add to the style section for beautifying date/time fields */
-        .form-group input[type="date"], .form-group input[type="time"] {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-
-        /* Add phone input placeholder and pattern */
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            padding-left: 40px;
-            background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16"><path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/><path fill-rule="evenodd" d="M8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12zM8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10z"/></svg>');
-            background-position: 10px 10px;
-            background-repeat: no-repeat;
-        }
-
-        .flatpickr-time input {
-            pointer-events: none;
-            caret-color: transparent;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tabu | Yerevan</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+  <!-- Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
+
+  <style>
+    :root {
+      /* Deep architectural palette */
+      --primary: #4f46e2;
+      --primary-hover: #4338ca;
+      --bg-color: #fcfcfd;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-soft: #f1f5f9;
+      --border: #e2e8f0;
+      --shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.08);
+      --radius: 20px;
+      --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+      /* Broken Grid Variables */
+      --overlap-lg: -120px;
+      --overlap-md: -60px;
+      --section-spacing: 25px;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #0c111d;
+      --text-main: #f9fafb;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #818cf8;
+      --accent-soft: #1e293b;
+      --card-bg: #1e293b;
+      --border: #1f2937;
+      --shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Outfit", sans-serif;
+      color: var(--text-main);
+      background: var(--bg-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: var(--transition);
+    }
+
+    /* ========== HEADER & ISO SWITCHER ========== */
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    .main-header.scrolled {
+      background: var(--bg-color);
+      height: 70px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .main-nav a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+
+    .main-nav a:hover {
+      opacity: 1;
+      color: var(--primary);
+    }
+
+    .iso-switcher {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--accent-soft);
+      padding: 4px;
+      border-radius: 50px;
+    }
+
+    .iso-btn {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .iso-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* ========== BROKEN GRID COMPONENTS ========== */
+    .section-wrapper {
+      padding: var(--section-spacing) 2%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .broken-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+      align-items: center;
+    }
+
+    .grid-image-large {
+      grid-column: 1 / 8;
+      z-index: 1;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .grid-image-small {
+      grid-column: 7 / 13;
+      margin-top: var(--overlap-lg);
+      z-index: 2;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 8px solid var(--bg-color);
+    }
+
+    .grid-text-block {
+      grid-column: 2 / 7;
+      background: var(--card-bg);
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-top: var(--overlap-md);
+      z-index: 3;
+      position: relative;
+    }
+
+    /* ========== LUXURY GRID & QUOTES ========== */
+    .luxury-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 30px;
+      align-items: center;
+      margin-bottom: 120px;
+    }
+
+    .collage-wrapper {
+      position: relative;
+      height: 600px;
+      grid-column: span 12;
+    }
+
+    .collage-item {
+      position: absolute;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .collage-item:hover {
+      transform: scale(1.02) translateY(-10px);
+      z-index: 10;
+    }
+
+    .item-lg { width: 60%; height: 80%; top: 0; left: 0; z-index: 1; }
+    .item-md { width: 40%; height: 60%; bottom: 0; right: 0; z-index: 2; border: 10px solid var(--bg-color); }
+    .item-sm { width: 25%; height: 35%; top: 20%; right: 15%; z-index: 3; border: 5px solid var(--bg-color); }
+
+    .quote-display {
+      grid-column: span 12;
+      text-align: center;
+      padding: 60px 0;
+      position: relative;
+    }
+
+    .quote-display h2 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--text-main) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .quote-display p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    .experience-section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .experience-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: clamp(20px, 5vw, 40px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .glass-card.headline-card h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+
+    [data-theme="dark"] .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    @media (max-width: 768px) {
+      .luxury-grid {
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+      .collage-wrapper {
+        height: 350px;
+      }
+      .quote-display h2 {
+        font-size: 28px !important;
+        padding: 0 10px;
+      }
+      .quote-display p {
+        font-size: 16px !important;
+      }
+      .item-lg { width: 90%; left: 5%; top: 0; }
+      .item-md { width: 70%; bottom: -10px; right: 0; }
+      .item-sm { display: none; }
+
+      .hero h1 {
+        font-size: clamp(32px, 10vw, 42px) !important;
+        text-align: center;
+      }
+      .hero-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .hero-btns {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin-top: 20px;
+        gap: 15px;
+      }
+      .reserve-btn {
+        width: 100%;
+        text-align: center;
+      }
+      
+      #quote-headline {
+        font-size: 22px !important;
+      }
+      .glass-card {
+        bottom: 20px !important;
+        left: 15px !important;
+        right: 15px !important;
+        padding: 20px !important;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .quote-display h2 {
+        font-size: 24px !important;
+      }
+      .hero h1 {
+        font-size: 28px !important;
+      }
+      #quote-headline {
+        font-size: 20px !important;
+      }
+    }
+
+    img,
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* ========== HERO OVERHAUL ========== */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 5%;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 6rem);
+      line-height: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    .hero-bg-media {
+      position: absolute;
+      top: 10%;
+      right: 5%;
+      width: 50%;
+      height: 80%;
+      z-index: 1;
+      border-radius: 40px;
+      overflow: hidden;
+      clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    /* ========== MOBILE BOTTOM BAR ========== */
+    .bottom-bar {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      background: #4F46E2;
+      color: white;
+      height: 64px;
+      border-radius: 32px;
+      z-index: 5000;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 10px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+    }
+
+    .bottom-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      gap: 4px;
+      opacity: 0.8;
+      color: #ffff;
+
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .bottom-btn i {
+      font-size: 1.2rem;
+    }
+
+    .bottom-btn.active {
+
+      opacity: 1;
+    }
+
+    /* ========== RESPONSIVENESS ========== */
+    /* ========== MOBILE FULLSCREEN MENU ========== */
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 3001;
+    }
+
+    .fullscreen-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-color);
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      transform: translateY(-100%);
+      transition: var(--transition);
+      opacity: 0;
+    }
+
+    .fullscreen-menu.open {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .fullscreen-menu a {
+      font-size: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    /* ========== MODAL STYLES ========== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 4000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: var(--bg-color);
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 3rem;
+      border-radius: var(--radius);
+      position: relative;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 2rem;
+    }
+
+    .modal-content ul {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .modal-content li {
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .modal-btns {
+      display: flex;
+      gap: 1rem;
+      position: sticky;
+      bottom: 0;
+      background: var(--bg-color);
+      padding-top: 2rem;
+    }
+
+    .btn-solid {
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-outline {
+      border: 2px solid var(--border);
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-main);
+    }
+
+    @media (max-width: 768px) {
+      .main-nav {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .bottom-bar {
+        display: flex;
+      }
+
+      section {
+        padding-bottom: 100px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+    }
+
+    .hidden {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: var(--transition);
+    }
+
+    .fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========== FOOTER ========== */
+    .main-footer {
+      background: #090e1a;
+      color: #ffffff;
+      padding: 80px 5% 40px;
+      margin-top: 100px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1.2fr 1.2fr;
+      gap: 50px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-col h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+    }
+
+    .footer-col p,
+    .footer-col a {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      transition: var(--transition);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .footer-col a:hover {
+      color: #ffffff;
+      transform: translateX(5px);
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #ffffff;
+      transition: var(--transition);
+    }
+
+    .social-link:hover {
+      background: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .footer-bottom {
+      margin-top: 80px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    @media (max-width: 1024px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .main-footer {
+        padding: 60px 20px 40px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<!-- HEADER WITH NAV -->
-<header class="main-header">
-    <nav class="main-nav">
+  <header class="main-header">
+    <div class="logo">Tabu</div>
+    <div class="nav-container">
+      <nav class="main-nav">
         <ul>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#photos">Photos</a></li>
-            <li><a href="#videos">Video Library</a></li>
-            <li><a href="#contact">Contact Us</a></li>
+          <li><a href="#about-section" id="about">About</a></li>
+          <li><a href="images/menu/menuTabu.pdf" id="menu">Menu</a></li>
+          <li><a href="#gallery-section" id="photos">Gallery</a></li>
+          <li><a href="#contact-section" id="contact">Contact</a></li>
         </ul>
-    </nav>
-    <div class="header-right">
-        <div class="dark-mode-toggle">
-            <input type="checkbox" id="darkModeSwitch" class="dark-mode-switch" onchange="toggleDarkMode()">
-            <label for="darkModeSwitch" class="dark-mode-label">
-                <i class="fas fa-sun"></i>
-            </label>
-        </div>
-        <div class="language-bar">
-            <a href="#" onclick="changeLanguage('en')">EN</a>
-            <a href="#" onclick="changeLanguage('ru')">RU</a>
-        </div>
+      </nav>
+      <div class="iso-switcher">
+        <div class="iso-btn active" onclick="setLang('en', this)">EN</div>
+        <div class="iso-btn" onclick="setLang('hy', this)">AM</div>
+        <div class="iso-btn" onclick="setLang('ru', this)">RU</div>
+      </div>
+
     </div>
-</header>
+  </header>
 
-<!-- HERO SECTION -->
-<section class="hero">
-    <h1 id="hero-title">Katsin: Yerevan’s Destination for Elegant Dining</h1>
-    <div class="hero-buttons">
-        <button class="hero-btn" onclick="showReservationForm()">Reserve a Table</button>
-        <button class="hero-btn view-menu">View Menu</button>
+  <div class="fullscreen-menu">
+    <a href="#about-section" id="mobile-about" onclick="toggleMenu()">About</a>
+    <a href="menu.pdf" id="mobile-menu" onclick="toggleMenu()">Menu</a>
+    <a href="#gallery-section" id="mobile-gallery" onclick="toggleMenu()">Gallery</a>
+    <a href="#contact-section" id="mobile-contact" onclick="toggleMenu()">Contact</a>
+  </div>
+
+  <div class="modal-overlay" id="terms-modal">
+    <div class="modal-content">
+      <h3 id="terms-title">Booking Conditions</h3>
+      <ul id="terms-list">
+        <!-- populated by js -->
+      </ul>
+      <div class="modal-btns">
+        <button class="btn-solid" onclick="confirmBooking()">Agree & Continue</button>
+        <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      </div>
     </div>
-</section>
+  </div>
 
-<!-- ABOUT SECTION -->
-<section id="about">
-    <div class="about-container">
-        <div class="about-content">
-            <p id="about-text">
-                Welcome to Katsin, where modern style meets rich flavor. We combine international culinary ideas with fresh local ingredients to create unique and memorable dishes.
-Whether you're joining us for a casual evening, a family gathering, or a special celebration, Katsin offers a cozy, elegant atmosphere and warm hospitality.
-Taste the harmony of creativity and tradition at Katsin..
-            </p>
-            <h2 id="about-heading">About Us</h2>
-            <div class="about-features">
-                <div class="feature-item">
-                    <img src="images/location.jpg" alt="Location">
-                    <h3 id="feature1-title">Prime Location on Amiryan Street</h3>
-                    <p id="feature1-text">Situated in Yerevan’s bustling center, Katsin offers easy access and a vibrant city backdrop for your dining experience.</p>
-                </div>
-                <div class="feature-item">
-                    <img src="images/music.jpg" alt="Live Music">
-                    <h3 id="feature2-title">Live Music & Signature Show Evenings</h3>
-                    <p id="feature2-text">Performances by talented musicians and artists turn every dinner into an unforgettable celebration.</p>
-                </div>
-                <div class="feature-item">
-                    <img src="images/interior.jpg" alt="Interior">
-                    <h3 id="feature3-title">Artful Interior & Ambient Luxury</h3>
-                    <p id="feature3-text">Enjoy a setting that blends contemporary design with Armenian soul—featuring curated décor, rich textures, and an atmosphere made for memorable moments.</p>
-                </div>
-            </div>
-        </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 id="hero-title">Where Fine Dining meets Live Entertainment.</h1>
+      <div class="hero-btns" style="display: flex; gap: 20px;">
+        <a href="https://rezx.am/new-reservation/2" target="_blank" class="reserve-btn" id="hero-reserve-btn"
+          style="background: var(--primary); color: white; padding: 15px 35px; border-radius: 40px; font-weight: 700;">RESERVE
+          NOW</a>
+      </div>
     </div>
-</section>
-
-<!-- MENU SECTION -->
-<section id="menu">
-    <div class="menu-container">
-        <div class="menu-content">
-            <h2 id="menu-heading">Menu</h2>
-            <a href="menu/menu.pdf" target="_blank" class="menu-btn" id="menu-btn-text">
-                View Menu
-            </a>
-        </div>
+    <div class="hero-bg-media">
+      <video src="videos/IMG_7518.mp4" autoplay muted loop playsinline></video>
     </div>
-</section>
+  </section>
 
-<!-- GALLERY SECTION -->
-<section id="photos">
-    <h2 id="gallery-heading">Photos</h2>
-    <div class="gallery">
-        <div class="gallery-item hidden">
-            <img src="images/img1.jpg" alt="Photo 1" loading="lazy">
+  <!-- EXPERIENCE SECTIONS -->
+  <section id="about-section" class="section-wrapper experience-section">
+    <div class="luxury-grid">
+      <div class="quote-display hidden">
+        <h2 id="quote-discovery">Some places are meant to be discovered…</h2>
+        <p id="quote-discovery-sub">TABU You Were Never Here 🐆</p>
+      </div>
+      <div class="collage-wrapper">
+        <div class="collage-item item-lg hidden">
+          <img src="images/IMG_8013.JPG.jpeg" alt="Discovery">
         </div>
-        <div class="gallery-item hidden">
-            <img src="images/img2.jpg" alt="Photo 2" loading="lazy">
+        <div class="collage-item item-md hidden">
+          <img src="images/IMG_8031.JPG.jpeg" alt="Hidden Gem">
         </div>
-        <div class="gallery-item hidden">
-            <img src="images/img3.jpg" alt="Photo 3" loading="lazy">
+        <div class="collage-item item-sm hidden">
+          <video src="videos/IMG_7806.mp4" muted loop autoplay></video>
         </div>
-        <div class="gallery-item hidden">
-            <img src="images/img4.jpg" alt="Photo 4" loading="lazy">
-        </div>
-        <div class="gallery-item hidden">
-            <img src="images/img5.jpg" alt="Photo 5" loading="lazy">
-        </div>
-        <div class="gallery-item hidden">
-            <img src="images/img6.jpg" alt="Photo 6" loading="lazy">
-        </div>
-        <div class="gallery-item hidden">
-            <img src="images/img7.jpg" alt="Photo 7" loading="lazy">
-        </div>
-        <div class="gallery-item hidden">
-            <img src="images/img8.jpg" alt="Photo 8" loading="lazy">
-        </div>
-        <div class="gallery-item hidden">
-            <img src="images/img9.jpg" alt="Photo 9" loading="lazy">
-        </div>
-        <div class="gallery-item hidden">
-            <img src="images/img10.jpg" alt="Photo 10" loading="lazy">
-        </div>
-        <div class="gallery-item hidden">
-            <img src="images/img11.jpg" alt="Photo 11" loading="lazy">
-        </div>
-        <div class="gallery-item hidden">
-            <img src="images/img12.jpg" alt="Photo 12" loading="lazy">
-        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- VIDEO LIBRARY SECTION -->
-<section id="videos">
-    <h2 id="video-heading">Video Library</h2>
-    <div class="video-library">
-        <div class="video-item hidden">
-            <video controls src="videos/video1.mp4" loading="lazy"></video>
+  <section class="section-wrapper experience-section">
+    <div class="luxury-grid">
+      <div class="collage-wrapper" style="grid-row: 2;">
+        <div class="collage-item item-lg hidden" style="right: 0; left: auto;">
+          <img src="images/IMG_8009.JPG.jpeg" alt="Experience">
         </div>
-        <div class="video-item hidden">
-            <video controls src="videos/video2.mp4" loading="lazy"></video>
+        <div class="collage-item item-md hidden" style="left: 0; right: auto;">
+          <img src="images/IMG_7639.PNG" alt="Tabu Detail">
         </div>
-        <div class="video-item hidden">
-            <video controls src="videos/video3.mp4" loading="lazy"></video>
-        </div>
-        <div class="video-item hidden">
-            <video controls src="videos/video4.mp4" loading="lazy"></video>
-        </div>
-        <div class="video-item hidden">
-            <video controls src="videos/video5.mp4" loading="lazy"></video>
-        </div>
-        <div class="video-item hidden">
-            <video controls src="videos/video6.mp4" loading="lazy"></video>
-        </div>
-        <div class="video-item hidden">
-            <video controls src="videos/video7.mp4" loading="lazy"></video>
-        </div>
-        <div class="video-item hidden">
-            <video controls src="videos/video8.mp4" loading="lazy"></video>
-        </div>
+      </div>
+      <div class="quote-display hidden" style="grid-row: 1;">
+        <h2 id="quote-tabu">The only “Tabu” thing about this is how quickly it disappears🍸</h2>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- CONTACT US SECTION -->
-<section id="contact">
-    <h2 id="contact-heading">Contact Us</h2>
-    <div class="contact-container">
-        <div class="contact-info">
-            <div>
-                <h2 id="get-in-touch">Get in Touch</h2>
-                <p>📍 <span id="location-text">Amiryan 4/6, Yerevan</span></p>
-                <p>🕰️ <span id="hours-text">Open Daily: 11:00 – 01:00</span></p>
-                <p>
-                    <a href="tel:+37477881001">
-                        <i class="fas fa-phone"></i>
-                        <span id="phone-text">+374 77 881001</span>
-                    </a>
-                </p>
-                <p>
-                    <a href="mailto:info@katsin.am">
-                        <i class="fas fa-envelope"></i>
-                        <span id="email-text">info@katsin.am</span>
-                    </a>
-                </p>
-                <p>
-                    <a href="https://wa.me/37477881001" target="_blank">
-                        <img src="whatsapp-color-svgrepo-com.svg" alt="WhatsApp Icon">
-                        <span id="whatsapp-text">Send Message</span>
-                    </a>
-                </p>
-            </div>
+  <section class="section-wrapper experience-section">
+    <div class="luxury-grid">
+      <div class="quote-display hidden">
+        <h2 id="quote-sign">Consider this your sign to finally book that table at TABU. 🕯️🔥</h2>
+        <a href="https://rezx.am/new-reservation/2" target="_blank" class="btn-solid" id="reserve-now-btn" style="margin-top: 30px; display: inline-block;">RESERVE NOW</a>
+      </div>
+      <div class="collage-wrapper">
+        <div class="collage-item item-lg hidden">
+          <img src="images/IMG_6671.JPG.jpeg" alt="Sign">
         </div>
-        <div class="map-section">
-            <div class="map-container">
-                <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3048.5515871419313!2d44.5080634766983!3d40.1798595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x406abde086cd6025%3A0xca014a370e8a581!2sKatsin%20Restaurant!5e0!3m2!1sen!2sus!4v1717435120000!5m2!1sen!2sus"
-                        allowfullscreen=""
-                        loading="lazy">
-                </iframe>
-            </div>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=40.1798595,44.5106384" target="_blank" class="directions-btn">
-                <i class="fas fa-directions"></i>
-                <span id="directions-text">Get Directions</span>
-            </a>
+        <div class="collage-item item-md hidden">
+          <video src="videos/tabu.mp4" muted loop autoplay></video>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-    <p id="footer-text">Katsin Restaurant © 2025 | Yerevan, Armenia</p>
-    <div class="footer-icons">
-        <a href="https://www.instagram.com/katsinyerevan/" target="_blank" aria-label="Instagram">
-            <img src="instagram-1-svgrepo-com.svg" alt="Instagram Icon">
-        </a>
-        <a href="https://www.facebook.com/katsinyerevan" target="_blank" aria-label="Facebook">
-            <img src="facebook-color-svgrepo-com.svg" alt="Facebook Icon">
-        </a>
-        <a href="https://www.tripadvisor.com/Restaurant_Review-g293932-d21404875-Reviews-Katsin_Restaurant-Yerevan.html" target="_blank" aria-label="TripAdvisor">
-            <img src="tripadvisor-icon.svg" alt="TripAdvisor Icon">
-        </a>
+  <section id="gallery-section" class="section-wrapper experience-section">
+    <div class="luxury-grid">
+      <div class="collage-wrapper">
+        <div class="collage-item item-lg hidden" style="width: 100%; height: 100%;">
+          <video src="videos/IMG_7518.mp4" muted loop autoplay style="border-radius: var(--radius);"></video>
+          <div class="glass-card headline-card" style="position: absolute; bottom: 40px; left: 40px; right: 40px; text-align: center;">
+            <h2 id="quote-headline" style="margin: 0; color: var(--text-main);">This isn’t just dinner; it’s the headline event.</h2>
+          </div>
+        </div>
+      </div>
     </div>
-</footer>
 
-<!-- RESERVATION FORM -->
-<div id="reservationForm" class="reservation-form">
-    <button class="close-btn" onclick="hideReservationForm()" aria-label="Close">×</button>
-    <h2 id="reservation-title">Make a Reservation</h2>
-    <div id="reservationSuccessMsg" style="display:none; color: green; font-weight: 500; margin-bottom: 1rem;"></div>
-    <form id="reservationFormContent">
-        <div class="form-group">
-            <label for="customerName">Full Name</label>
-            <input type="text" id="customerName" required>
-        </div>
-        <div class="form-group">
-            <label for="phoneNumber">Phone Number</label>
-            <input type="text" id="phoneNumber" required placeholder="+CountryCodeNumber (e.g. +(374)01234567 or +1 5551234567)" pattern="\+\d{1,3}\s?\d{6,14}">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email">
-        </div>
-        <div class="form-group">
-            <label for="datetime">Date & Time</label>
-            <input id="datetime" type="text" readonly required>
-        </div>
-        <div class="form-group">
-            <label for="guestQty">Number of Guests</label>
-            <input type="number" id="guestQty" min="1" required>
-        </div>
-        <button type="submit" class="submit-btn" id="submit-button">Submit Reservation</button>
-    </form>
-    <div id="rezx-note" style="margin-top: 1.2rem; color: #888; font-size: 0.95rem; text-align: center;"></div>
-</div>
+    <!-- Additional Gallery Items for "Vibes" -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 80px;">
+      <div class="hidden"><img src="images/IMG_8018.JPG.jpeg" style="border-radius: 15px; height: 300px;"></div>
+      <div class="hidden"><img src="images/IMG_8007.JPG.jpeg" style="border-radius: 15px; height: 300px;"></div>
+      <div class="hidden"><img src="images/113.jpg" style="border-radius: 15px; height: 300px;"></div>
+      <div class="hidden"><img src="images/112.jpg" style="border-radius: 15px; height: 300px;"></div>
+    </div>
+  </section>
 
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<!-- SCRIPTS -->
-<script>
-    let reservations = [];
-    let isStaffLoggedIn = false;
-    let currentLanguage = 'en';
+  <!-- ACTION BAR MOBILE -->
+  <div class="bottom-bar">
+    <a href="https://rezx.am/new-reservation/2" target="_blank" class="bottom-btn active">
+      <i class="fas fa-calendar-check"></i>
+      <span id="nav-book">Book</span>
+    </a>
+    <a href="images/menu/menuTabu.pdf" target="_blank" class="bottom-btn">
+      <i class="fas fa-utensils"></i>
+      <span id="nav-menu">Menu</span>
+    </a>
+    <a href="map.html" class="bottom-btn" target="_blank">
+      <i class="fas fa-map-marker-alt"></i>
+      <span id="nav-map">Map</span>
+    </a>
+  </div>
 
-    ///// here we have working hours ////
-    let timeFrom = '11:00';
-    let timeTo = '01:00';
+  <footer class="main-footer" id="contact-section">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">Tabu</div>
+        <p id="footer-tagline">Where Fine Dining meets Live Entertainment.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/tabu.yerevan/" target="_blank" class="social-link"><i
+              class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com/profile.php?id=61560662243003" target="_blank" class="social-link"><i
+              class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
 
+      <div class="footer-col">
+        <h4 id="footer-nav-title">Navigation</h4>
+        <a href="#about-section" id="footer-link-about">About</a>
+        <a href="menu.pdf" target="_blank" id="footer-link-menu">Menu</a>
+        <a href="#gallery-section" id="footer-link-photos">Gallery</a>
+        <a href="map.html" target="_blank" id="footer-link-map">Map</a>
+      </div>
+
+      <div class="footer-col">
+        <h4 id="footer-contact-title">Contact</h4>
+        <p><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--primary);"></i> <span
+            id="footer-address">Isahakyan 42/4, Yerevan</span></p>
+        <p><i class="fas fa-phone" style="margin-right: 10px; color: var(--primary);"></i> <a href="tel:+37493804020" id="footer-phone"
+            style="display: inline;">+374 93 804020</a></p>
+        <p><i class="fas fa-envelope" style="margin-right: 10px; color: var(--primary);"></i> <a
+            href="mailto:tabu.yerevan@mail.ru" style="display: inline;">tabu.yerevan@mail.ru</a></p>
+      </div>
+
+      <div class="footer-col">
+        <h4 id="footer-hours-title">Hours</h4>
+        <p id="footer-hours-daily">Open Daily: 20:00 – 01:00</p>
+        <p id="footer-show-time">Show program starts at 21:30</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p id="footer-copyright">Tabu © 2025 | Yerevan, Armenia</p>
+    </div>
+  </footer>
+
+  <script>
     const translations = {
-        en: {
-            'hero-title': 'Katsin: Yerevan’s Destination for Elegant Dining',
-            'about-text': "Welcome to Katsin, where modern style meets rich flavor. We combine international culinary ideas with fresh local ingredients to create unique and memorable dishes.Whether you're joining us for  a casual evening, a family gathering, or a special celebration, Katsin offers a cozy, elegant atmosphere and warm hospitality. Taste the harmony of creativity and tradition at Katsin.",
-            'about-heading': 'About Us',
-            'feature1-title': 'Prime Location on Amiryan Street',
-            'feature1-text': 'Situated in Yerevan’s bustling center, Katsin offers easy access and a vibrant city backdrop for your dining experience.',
-            'feature2-title': 'Live Music & Signature Show Evenings',
-            'feature2-text': 'Performances by talented musicians and artists turn every dinner into an unforgettable celebration.',
-            'feature3-title': 'Artful Interior & Ambient Luxury',
-            'feature3-text': 'Enjoy a setting that blends contemporary design with Armenian soul—featuring curated décor, rich textures, and an atmosphere made for memorable moments.',
-            'menu-heading': 'Menu',
-            'menu-btn-text': 'View Menu',
-            'gallery-heading': 'Photos',
-            'video-heading': 'Video Library',
-            'contact-heading': 'Contact Us',
-            'get-in-touch': 'Get in Touch',
-            'location-text': 'Amiryan 4/6, Yerevan',
-            'hours-text': 'Open Daily: 11:00 – 01:00',
-            'phone-text': '+374 77 881001',
-            'email-text': 'info@katsin.am',
-            'whatsapp-text': 'Send Message',
-            'directions-text': 'Get Directions',
-            'footer-text': 'Katsin Restaurant © 2025 | Yerevan, Armenia',
-            'reservation-title': 'Make a Reservation',
-            'reservation-success': 'Reservation requested! The restaurant will inform you about acceptance or denial.',
-            'login-error': 'Invalid credentials',
-            'rezx-note': 'The reservation process is managed by RezX CRM.'
-        },
-        ru: {
-            'hero-title': 'Katsin: место изысканной гастрономии в самом сердце Еревана',
-            'about-text': 'Добро пожаловать в Katsin — ресторан, где современный стиль встречается с насыщенным вкусом. Мы соединяем кулинарные традиции разных стран с местными продуктами, создавая оригинальные и запоминающиеся блюда.Katsin — это уют, элегантность и гостеприимство для дружеских встреч, семейных ужинов и особых событий.Откройте для себя гармонию вкуса и вдохновения в Katsin',
-            'about-heading': 'О нас',
-            'feature1-title': 'Идеальное расположение на улице Амиряна',
-            'feature1-text': 'В самом центре Еревана — Katsin идеально подходит для ужина в окружении городской энергии и комфорта.',
-            'feature2-title': 'Живая музыка и фирменные шоу-вечера',
-            'feature2-text': 'Погрузитесь в атмосферу незабываемых вечеров в Katsin с живой музыкой и яркими выступлениями, которые дополняют вашу трапезу.',
-            'feature3-title': 'Изысканный интерьер и атмосфера уюта',
-            'feature3-text': 'Современный дизайн с армянским акцентом, продуманное освещение и уютная обстановка создают идеальную атмосферу для вечера.',
-            'menu-heading': 'Меню',
-            'menu-btn-text': 'Посмотреть меню',
-            'gallery-heading': 'Фотографии',
-            'video-heading': 'Видео галерея',
-            'contact-heading': 'Свяжитесь с нами',
-            'get-in-touch': 'Связаться с нами',
-            'location-text': 'Улица Амирян 4/6, Ереван',
-            'hours-text': 'Ежедневно: 11:00 – 01:00',
-            'phone-text': '+374 77 881001',
-            'email-text': 'info@katsin.am',
-            'whatsapp-text': 'Отправить сообщение',
-            'directions-text': 'Получить направление',
-            'footer-text': 'Ресторан Katsin © 2025 | Ереван, Армения',
-            'reservation-title': 'Забронировать столик',
-            'reservation-success': 'Бронирование отправлено! Ресторан сообщит вам о подтверждении или отказе.',
-            'login-error': 'Неверные учетные данные',
-            'rezx-note': 'Процесс бронирования осуществляется через RezX CRM.'
-        }
+      en: {
+        "hero-title": "Where Fine Dining meets Live Entertainment.",
+        "hero-reserve-btn": "RESERVE NOW",
+        "mobile-about": "About Us",
+        "mobile-menu": "Menu",
+        "mobile-gallery": "Gallery",
+        "mobile-contact": "Contact",
+        "nav-book": "Book",
+        "nav-menu": "Menu",
+        "nav-map": "Map",
+        "quote-discovery": "Some places are meant to be discovered…",
+        "quote-discovery-sub": "TABU You Were Never Here 🐆",
+        "quote-tabu": "The only “Tabu” thing about this is how quickly it disappears🍸",
+        "quote-sign": "Consider this your sign to finally book that table at TABU. 🕯️🔥",
+        "reserve-now-btn": "RESERVE NOW",
+        "quote-headline": "This isn’t just dinner; it’s the headline event.",
+        "gallery-heading": "Atmosphere",
+        menu: "Menu",
+        about: "About Us",
+        photos: "Gallery",
+        contact: "Contact",
+        "terms-title": "Booking Conditions & Rules",
+        rules: [
+          "Operating Hours: 18:30 – 24:00. Music starts at 20:00.",
+          "Entrance Fee: 8,000 AMD (Fri/Sat: 10,000 AMD).",
+          "Entrance groups exclusively of men is prohibited.",
+          "Dress Code: Non-sportswear. No shorts/sandals.",
+          "Age Limit: 16+ years only.",
+          "Arrival at least 24h prior for cancellation refund."
+        ],
+        "footer-tagline": "Where Fine Dining meets Live Entertainment.",
+        "footer-nav-title": "Navigation",
+        "footer-link-about": "About Us",
+        "footer-link-menu": "Menu",
+        "footer-link-photos": "Gallery",
+        "footer-link-map": "Map",
+        "footer-contact-title": "Contact",
+        "footer-address": "Isahakyan 42/3, Yerevan, 0009",
+        "footer-phone": "+374 93 804020",
+        "footer-hours-title": "Hours",
+        "footer-hours-daily": "Open Daily: 18:30 – 24:00",
+        "footer-show-time": "DJ & Live Music: 20:00 – 23:00",
+        "footer-copyright": "Tabu © 2025 | Yerevan, Armenia"
+      },
+      hy: {
+        "hero-title": "Որտեղ նրբաճաշակ խոհանոցը հանդիպում է կենդանի ժամանցին:",
+        "hero-reserve-btn": "ԱՄՐԱԳՐԵԼ ՀԻՄԱ",
+        "mobile-about": "Մեր Մասին",
+        "mobile-menu": "Մենյու",
+        "mobile-gallery": "Պատկերասրահ",
+        "mobile-contact": "Կապ",
+        "nav-book": "Ամրագրել",
+        "nav-menu": "Մենյու",
+        "nav-map": "Քարտեզ",
+        "quote-discovery": "Որոշ վայրեր ստեղծված են բացահայտվելու համար…",
+        "quote-discovery-sub": "TABU Դու երբեք այստեղ չես եղել 🐆",
+        "quote-tabu": "Միակ «Tabu» բանը այստեղ այն է, թե որքան արագ է այն անհետանում🍸",
+        "quote-sign": "Սա Ձեր նշանն է՝ վերջապես ամրագրելու այդ սեղանը TABU-ում: 🕯️🔥",
+        "reserve-now-btn": "ԱՄՐԱԳՐԵԼ ՀԻՄԱ",
+        "quote-headline": "Սա պարզապես ընթրիք չէ, սա գլխավոր իրադարձությունն է:",
+        "gallery-heading": "Մթնոլորտ",
+        menu: "Մենյու",
+        about: "Մեր Մասին",
+        photos: "Պատկերասրահ",
+        contact: "Կապ",
+        "terms-title": "Ամրագրման Պայմաններ",
+        rules: [
+          "Աշխատանքային ժամերը՝ 18:30 - 24:00: Երաժշտության սկիզբը՝ 20:00:",
+          "Մուտքավճար՝ 8,000 դրամ (Ուրբ/Շաբ՝ 10,000 դրամ):",
+          "Միայն տղամարդկանցից կազմված խմբերի մուտքն արգելվում է:",
+          "Դրես-կոդ՝ ոչ սպորտային: Մուտքը շորտերով արգելվում է:",
+          "Տարիքային սահմանափակում՝ 16+:",
+          "Չեղարկումը պետք է կատարվի առնվազն 24 ժամ առաջ:"
+        ],
+        "footer-tagline": "Որտեղ նրբաճաշակ խոհանոցը հանդիպում է կենդանի ժամանցին:",
+        "footer-nav-title": "Նավիգացիա",
+        "footer-link-about": "Մեր Մասին",
+        "footer-link-menu": "Մենյու",
+        "footer-link-photos": "Պատկերասրահ",
+        "footer-link-map": "Քարտեզ",
+        "footer-contact-title": "Կապ",
+        "footer-address": "Իսահակյան 42/3, Երևան, 0009",
+        "footer-phone": "+374 93 804020",
+        "footer-hours-title": "Ժամեր",
+        "footer-hours-daily": "Բաց է ամեն օր: 18:30 – 24:00",
+        "footer-show-time": "DJ և կենդանի երաժշտություն: 20:00 – 23:00",
+        "footer-copyright": "Tabu © 2025 | Երևան, Հայաստան"
+      },
+      ru: {
+        "hero-title": "Где изысканная кухня встречается с живыми выступлениями.",
+        "hero-reserve-btn": "ЗАБРОНИРОВАТЬ СЕЙЧАС",
+        "mobile-about": "О нас",
+        "mobile-menu": "Меню",
+        "mobile-gallery": "Галерея",
+        "mobile-contact": "Контакт",
+        "nav-book": "Бронь",
+        "nav-menu": "Меню",
+        "nav-map": "Карта",
+        "quote-discovery": "Некоторые места созданы для того, чтобы их открывали…",
+        "quote-discovery-sub": "TABU Вас здесь никогда не было 🐆",
+        "quote-tabu": "Единственное «Tabu» здесь — это то, как быстро оно исчезает🍸",
+        "quote-sign": "Считайте это своим знаком, чтобы наконец забронировать столик в TABU. 🕯️🔥",
+        "reserve-now-btn": "ЗАБРОНИРОВАТЬ СЕЙЧАС",
+        "quote-headline": "Это не просто ужин, это главное событие.",
+        "gallery-heading": "Атмосфера",
+        menu: "Меню",
+        about: "О нас",
+        photos: "Галерея",
+        contact: "Контакты",
+        "terms-title": "Условия и Правила",
+        rules: [
+          "Время работы: 18:30 - 24:00. Музыка: 20:00.",
+          "Входная плата: 8,000 AMD (Пт/Сб: 10,000 AMD).",
+          "Вход группам исключительно из мужчин запрещен.",
+          "Дресс-код: Неспортивный. Вход в шортах запрещен.",
+          "Возрастное ограничение: 16+.",
+          "Отмена возможна минимум за 24 часа."
+        ],
+        "footer-tagline": "Где изысканная кухня встречается с живыми выступлениями.",
+        "footer-nav-title": "Навигация",
+        "footer-link-about": "О нас",
+        "footer-link-menu": "Меню",
+        "footer-link-photos": "Галерея",
+        "footer-link-map": "Карта",
+        "footer-contact-title": "Контакт",
+        "footer-address": "Исахакян 42/3, Ереван, 0009",
+        "footer-phone": "+374 93 804020",
+        "footer-hours-title": "Время",
+        "footer-hours-daily": "Ежедневно: 18:30 – 24:00",
+        "footer-show-time": "DJ и живая музыка: 20:00 – 23:00",
+        "footer-copyright": "Tabu © 2025 | Ереван, Армения"
+      }
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // Header scroll effect
-        const header = document.querySelector('.main-header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+    let currentLang = 'en';
+
+    function setLang(lang, btn) {
+      currentLang = lang;
+      localStorage.setItem('coba-lang', lang);
+
+      if (btn) {
+        document.querySelectorAll('.iso-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      } else {
+        // Sync button if setLang called without btn (init)
+        document.querySelectorAll('.iso-btn').forEach(b => {
+          if (b.textContent.toLowerCase() === (lang === 'hy' ? 'am' : lang)) {
+            b.classList.add('active');
+          } else {
+            b.classList.remove('active');
+          }
         });
+      }
 
-        // Intersection Observer for fade-in animations
-        const hiddenElements = document.querySelectorAll('.hidden');
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.2,
-            rootMargin: '0px 0px -50px 0px'
+      // Update basic elements
+      for (const [key, value] of Object.entries(translations[lang])) {
+        if (key === 'rules') continue;
+        const el = document.getElementById(key);
+        if (el) {
+          el.textContent = value;
+          // Special case for phone link
+          if (key === 'footer-phone') {
+            el.href = `tel:${value.replace(/\s+/g, '')}`;
+          }
+        }
+      }
+
+      // Update rules in modal
+      const list = document.getElementById('terms-list');
+      if (list) {
+        list.innerHTML = translations[lang].rules.map(r => `<li>${r}</li>`).join('');
+      }
+    }
+
+    function toggleMenu() {
+      document.querySelector('.fullscreen-menu').classList.toggle('open');
+      const icon = document.querySelector('.menu-toggle i');
+      icon.classList.toggle('fa-bars');
+      icon.classList.toggle('fa-times');
+    }
+
+    function openTerms() {
+      document.getElementById('terms-modal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('terms-modal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function confirmBooking() {
+      closeModal();
+      window.open("https://rezx.am/new-reservation/2", "_blank");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedLang = localStorage.getItem('coba-lang') || 'en';
+      setLang(savedLang);
+
+      const header = document.querySelector(".main-header");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) header.classList.add("scrolled");
+        else header.classList.remove("scrolled");
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add("fade-in");
         });
+      }, { threshold: 0.1 });
 
-        hiddenElements.forEach(el => observer.observe(el));
+      document.querySelectorAll(".hidden").forEach(el => observer.observe(el));
 
-        // Add plus symbol to phone number
-        validatePhoneNumber();
-
-        // Form submission fallback
-        document.getElementById('reservationFormContent').addEventListener('submit', submitReservation);
+      // Hook up the bottom bar book button to the modal
+      const bookBtns = document.querySelectorAll('a[href*="rezx"]');
+      bookBtns.forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          openTerms();
+        };
+      });
     });
-
-    function changeLanguage(lang) {
-        currentLanguage = lang;
-        for (const [key, value] of Object.entries(translations[lang])) {
-            const element = document.getElementById(key);
-            if (element) element.textContent = value;
-        }
-    }
-
-    function toggleDarkMode() {
-        const isDarkMode = document.getElementById('darkModeSwitch').checked;
-        document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-        const label = document.querySelector('.dark-mode-label i');
-        if (label) {
-            label.className = isDarkMode ? 'fas fa-moon' : 'fas fa-sun';
-        }
-    }
-
-    function validatePhoneNumber() {
-        const phoneInput = document.getElementById("phoneNumber");
-
-        phoneInput.addEventListener("input", () => {
-            // If first character is not +, add it
-            if (!phoneInput.value.startsWith("+")) {
-                phoneInput.value = "+" + phoneInput.value.replace(/\D/g, '');
-            } else {
-                // Allow only digits after the +
-                phoneInput.value = "+" + phoneInput.value.slice(1).replace(/\D/g, '');
-            }
-        });
-
-        phoneInput.addEventListener("keydown", (e) => {
-            // Prevent deleting the +
-            if ((phoneInput.selectionStart <= 1) && (e.key === "Backspace" || e.key === "Delete")) {
-                e.preventDefault();
-            }
-        });
-    }
-
-    // function setMinDateTime() {
-    //     const now = new Date();
-    //     // Format to yyyy-MM-ddTHH:mm for input
-    //     const pad = n => n.toString().padStart(2, '0');
-    //     const minDateTime = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    //     document.getElementById('datetime').setAttribute('min', minDateTime);
-    // }
-
-    function showReservationForm() {
-        document.getElementById('reservationForm').style.display = 'block';
-        document.getElementById('reservationFormContent').style.display = 'block';
-        document.getElementById('reservationSuccessMsg').style.display = 'none';
-        document.getElementById('rezx-note').textContent = translations[currentLanguage]['rezx-note'];
-        // setMinDateTime();
-        document.body.style.overflow = 'hidden';
-    }
-
-    function checkIsDefaultShowForm() {
-        const params = new URLSearchParams(window.location.search);
-        const name = params.get("form");
-        if(name) {
-            showReservationForm();
-        }
-    }
-    checkIsDefaultShowForm();
-
-    function hideReservationForm() {
-        document.getElementById('reservationForm').style.display = 'none';
-        document.body.style.overflow = '';
-    }
-
-    async function submitReservation(event) {
-        event.preventDefault();
-        try {
-            const customerName = document.getElementById('customerName').value.trim();
-            let email = document.getElementById('email').value.trim();
-            const phoneNumber = document.getElementById('phoneNumber').value.trim();
-            const selectedDatetime = document.getElementById('datetime').value;
-            const guestQty = document.getElementById('guestQty').value;
-
-            // Create a Date object in local time
-            const localDate = new Date(selectedDatetime + ':00.000Z');
-            // Add 5 minutes
-            localDate.setMinutes(localDate.getMinutes());
-            const datetime = localDate.toISOString();
-            
-
-            // International phone validation: +CountryCodeNumber or +CountryCode Number
-            const phonePattern = /^\+\d{1,3}\s?\d{6,14}$/;
-            if (!phonePattern.test(phoneNumber)) {
-                alert('Please enter the phone number in the international format: +CountryCodeNumber (e.g. +37494900905 or +1 5551234567)');
-                return;
-            }
-
-            if (!customerName || !phoneNumber || !datetime || !guestQty) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-
-            // Check if email is empty
-            if(email === "") {
-                email = null;
-            }
-
-            // Prevent reservation in the past
-            const now = new Date();
-            const selectedDate = new Date(datetime);
-            if (selectedDate < now) {
-                alert('You cannot make a reservation in the past.');
-                return;
-            }
-
-            ////// to convert to UTC, removing localtimezone, for exaple in Armenia it's a 4 hours
-            const localtimeZone = ((new Date().getTimezoneOffset() / 60) * -1).toString();
-            const date = new Date(datetime);
-            const dateTemp = new Date(date.getTime() - 4 * 60 * 60 * 1000);
-            const fromDate = dateTemp.toISOString();
-
-            const reservation = {
-                customerName: customerName,
-                phoneNumber: phoneNumber,
-                email: email,
-                fromDate: fromDate,
-                guestQty: parseInt(guestQty),
-            };
-
-            // API endpoint URL
-            const apiUrl = ""; // Replace with the actual API URL
-
-            try {
-                // Disable submit button
-                disableSubmitBtn(true);
-
-                // Post the data to the API
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(reservation) // Serialize data to JSON
-                });
-
-                if (response.ok) {
-                    // Show reservation requested message in the correct language
-                    document.getElementById('reservationFormContent').style.display = 'none';
-                    const msg = document.getElementById('reservationSuccessMsg');
-                    msg.textContent = translations[currentLanguage]['reservation-success'];
-                    msg.style.display = 'block';
-
-                    disableSubmitBtn(false);
-                } else {
-                    // Handle failure
-                    const error = await response.text();
-                    console.error('Error:', error);
-                    alert('Failed to submit the reservation. Please try again.');
-                    disableSubmitBtn(false);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the reservation.');
-                disableSubmitBtn(false);
-            }
-
-            // Do not reset or hide the popup immediately, let user see the message
-        } catch (error) {
-            alert('An error occurred while submitting the reservation. Please try again.');
-        }
-
-        resetForm();
-    }
-
-    function disableSubmitBtn(isDisabled) {
-        const sumbitButton = document.getElementById('submit-button');
-        
-        if (sumbitButton && isDisabled) {
-            sumbitButton.disabled = true;
-            sumbitButton.style.opacity = '0.5';
-        }
-        if (sumbitButton && !isDisabled) {
-            sumbitButton.disabled = false;
-            sumbitButton.style.opacity = '1';
-        }
-    }
-
-    function resetForm() {
-        document.getElementById('customerName').value = null;
-        document.getElementById('email').value = null;
-        document.getElementById('phoneNumber').value = null;
-        document.getElementById('datetime').value = null;
-        document.getElementById('guestQty').value = null;
-    }
-
-    // flatpickr
-
-    function pad(n) {
-        return n < 10 ? '0' + n : n;
-    }
-
-    // Function to round time to nearest 5 minutes
-    function roundToNearest5(date) {
-        const minutes = date.getMinutes();
-        const remainder = minutes % 5;
-        const roundedMinutes = remainder < 3 ? 
-        minutes - remainder : 
-        minutes + (5 - remainder);
-        
-        const newDate = new Date(date);
-        newDate.setMinutes(roundedMinutes);
-        newDate.setSeconds(0);
-        newDate.setMilliseconds(0);
-        
-        return newDate;
-    }
-
-    // Set now rounded to nearest 5 minutes as default
-    const nowRounded = roundToNearest5(new Date());
-    // Add 5 minutes if rounded time is in the past (e.g., if it's 19:12, rounds to 19:15)
-    if (nowRounded <= new Date()) {
-        nowRounded.setMinutes(nowRounded.getMinutes() + 5);
-    }
-
-    ////// checking is nowRounded is not in the working hours range, setting current time to timeFrom 
-    let currentTime = `${pad(nowRounded.getHours())}:${pad(nowRounded.getMinutes())}`;
-    if (!isTimeInRange(currentTime, timeFrom, timeTo)) {
-        nowRounded.setHours(timeFrom.split(':')[0])
-        nowRounded.setMinutes(timeFrom.split(':')[1])
-    }     
-
-    flatpickr("#datetime", {
-        enableTime: true,
-        time_24hr: true,
-        dateFormat: "Y-m-d H:i",
-        minDate: "today",
-        defaultDate: nowRounded, // default time = now rounded to nearest 5 min
-        allowInput: false,
-        clickOpens: true,
-        disableMobile: true,
-
-        onOpen: function(selectedDates, dateStr, instance) {
-            // prevent typing in hour/minute fields
-            const timeInputs = instance.calendarContainer.querySelectorAll(".flatpickr-time input");
-            timeInputs.forEach(input => input.setAttribute("readonly", "readonly"));
-
-            const selectedDate = instance.selectedDates[0] || new Date();
-            const now = new Date();
-            const nowRounded = roundToNearest5(now);
-            if (nowRounded <= now) {
-                nowRounded.setMinutes(nowRounded.getMinutes() + 5);
-            }
-
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const isToday = selectedDate.toDateString() === today.toDateString();
-
-            if (isToday) {
-                const minTimeStr = pad(nowRounded.getHours()) + ":" + pad(nowRounded.getMinutes());                
-                // instance.set("minTime", minTimeStr);
-
-                instance.set("minTime", isTimeInRange(minTimeStr, timeFrom, timeTo) ? minTimeStr : timeFrom);
-                instance.set("maxTime", timeTo);
-            } else {
-                // instance.set("minTime", "00:00");
-
-                instance.set("minTime", timeFrom);
-                instance.set("maxTime", timeTo);
-            }
-        },
-
-        onChange: function(selectedDates, dateStr, instance) {
-            const selectedDate = selectedDates[0];
-            const now = new Date();
-            const nowRounded = roundToNearest5(now);
-            if (nowRounded <= now) {
-                nowRounded.setMinutes(nowRounded.getMinutes() + 5);
-            }
-
-            const isToday = selectedDate.toDateString() === (new Date()).toDateString();
-
-            if (isToday) {
-                const minTimeStr = pad(nowRounded.getHours()) + ":" + pad(nowRounded.getMinutes());
-                // instance.set("minTime", minTimeStr);
-
-                instance.set("minTime", isTimeInRange(minTimeStr, timeFrom, timeTo) ? minTimeStr : timeFrom);
-                instance.set("maxTime", timeTo);
-            } else {
-                // instance.set("minTime", "00:00");
-
-                instance.set("minTime", timeFrom);
-                instance.set("maxTime", timeTo);
-            }
-        }
-    });
-
-    function isTimeInRange(currentTime, startTime, endTime) {
-        const today = new Date().toISOString().split('T')[0]; // e.g. "2025-07-30"
-
-        const time = new Date(`${today}T${currentTime}:00`);
-        const start = new Date(`${today}T${startTime}:00`);
-        const end = new Date(`${today}T${endTime}:00`);
-
-        return time >= start && time <= end;
-    }
-
-    /////// check if query params has reservation property, open reservation popup
-    const params = new URLSearchParams(window.location.search);
-    if (JSON.parse(params.get('openreservation')) ) {
-        showReservationForm();
-    }
-</script>
-
+  </script>
 </body>
+
 </html>
-
-
